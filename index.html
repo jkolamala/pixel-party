@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101426">
+  <meta name="description" content="Blackjack, 2048, and Snow Rider 3D with saved scores and a shared coin shop.">
+  <title>Pixel Party</title>
+  <style>
+    :root{color-scheme:dark;--bg:#101014;--panel:#1b1b21;--panel2:#222228;--line:#35343c;--muted:#a3a0aa;--text:#f7f4f0;--pink:#fa6c94;--lime:#c5f278;--blue:#76b9ff;--yellow:#f6d46b;--mono:'Silkscreen';--sans:'Space Grotesk';--display:'Press Start 2P'}
+    *{box-sizing:border-box}html{min-width:320px;scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh}button{font:inherit;color:inherit}button:focus-visible,a:focus-visible{outline:2px solid var(--lime);outline-offset:3px}.shell{max-width:1200px;margin:auto;padding:0 36px 48px}.topbar{height:84px;border-bottom:1px solid #ffffff12;display:flex;align-items:center;justify-content:space-between}.brand{display:inline-flex;align-items:center;gap:11px;color:var(--text);text-decoration:none;font:700 19px var(--display);letter-spacing:-.7px}.brand-mark{width:30px;height:30px;display:grid;grid-template-columns:repeat(2,1fr);gap:3px;transform:rotate(-8deg)}.brand-mark i{border-radius:3px;background:var(--pink)}.brand-mark i:nth-child(2){background:var(--lime);transform:translateY(3px)}.brand-mark i:nth-child(3){background:var(--blue);transform:translateX(2px)}.brand-mark i:nth-child(4){background:var(--yellow)}.header-note{font:11px var(--mono);color:var(--muted);letter-spacing:1px;text-transform:uppercase}.home-view{animation:appear .35s ease}.hero{padding:68px 0 58px;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:30px}.eyebrow{display:flex;gap:9px;align-items:center;color:var(--lime);font:11px var(--mono);letter-spacing:1.3px;text-transform:uppercase}.eyebrow:before{content:'';height:1px;width:22px;background:currentColor}.hero h1{font:700 clamp(48px,7vw,84px)/.96 var(--display);letter-spacing:-5px;margin:20px 0 20px;max-width:670px}.hero h1 span{color:var(--pink)}.hero-copy{max-width:415px;color:#b9b6bf;font-size:15px;line-height:1.65;margin:0}.hero-art{height:240px;position:relative;display:flex;align-items:center;justify-content:center}.sun{width:196px;height:196px;border-radius:50%;background:linear-gradient(140deg,#f5d778,#ff8d9f);position:absolute;filter:drop-shadow(0 0 50px #fa6c9438)}.sun:after{content:'';position:absolute;left:-12%;right:-12%;height:8px;top:62%;background:var(--bg);box-shadow:0 17px 0 var(--bg),0 34px 0 var(--bg),0 51px 0 var(--bg)}.orbit{position:absolute;border:1px solid #fff3;width:280px;height:88px;border-radius:50%;transform:rotate(-20deg)}.orbit:before{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:var(--lime);top:8px;left:34px;box-shadow:0 0 25px #c5f278}.spark{position:absolute;color:var(--lime);font-size:22px}.spark.a{top:25px;right:20%}.spark.b{bottom:23px;left:17%;font-size:15px;color:var(--pink)}.art-label{position:absolute;bottom:3px;right:7%;font:10px var(--mono);color:#8e8b94;letter-spacing:1px}.section-head{display:flex;justify-content:space-between;align-items:end;margin:3px 0 19px}.section-head h2{font:600 23px var(--display);letter-spacing:-.8px;margin:0}.section-head p{font:11px var(--mono);color:var(--muted);margin:0 2px 3px}.game-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.game-card{position:relative;min-height:294px;background:var(--panel);border:1px solid #ffffff10;border-radius:15px;padding:16px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,border-color .2s,background .2s}.game-card:hover{transform:translateY(-4px);border-color:#ffffff33;background:#202027}.card-top{display:flex;justify-content:space-between;align-items:center;z-index:1}.game-number,.card-tag{font:10px var(--mono);letter-spacing:.7px;color:#9e9ba5}.card-tag{border:1px solid #ffffff24;border-radius:30px;padding:6px 9px}.illustration{height:140px;display:flex;align-items:center;justify-content:center;position:relative}.card-title{font:600 23px var(--display);letter-spacing:-.9px;margin:4px 0}.card-desc{font-size:12px;color:#aaa7b0;line-height:1.5;margin:0 0 15px}.play-link{cursor:pointer;border:0;background:none;padding:0;display:flex;align-items:center;gap:8px;color:var(--text);font:500 11px var(--mono);margin-top:auto;align-self:flex-start}.play-link span{display:grid;place-items:center;border-radius:50%;width:23px;height:23px;background:#ffffff13;transition:transform .2s,background .2s}.play-link:hover span{transform:translateX(3px);background:var(--pink);color:var(--bg)}
+    .cards-art{display:flex;align-items:center;justify-content:center;position:relative;width:120px;height:115px}.playing-card{width:65px;height:94px;background:#eee9e2;border-radius:8px;position:absolute;box-shadow:0 8px 23px #0008;display:flex;align-items:center;justify-content:center;font:700 30px var(--display)}.playing-card.back{transform:rotate(-13deg) translate(-20px,2px);background:linear-gradient(145deg,#f68aaa,#dd577f);color:#fff}.playing-card.front{transform:rotate(12deg) translate(20px,-1px);color:#c74568}.playing-card.front:after{content:'';font-size:24px;position:absolute;bottom:11px;right:12px}.playing-card.front:before{content:'A';position:absolute;top:7px;left:11px;font-size:17px}.tile-art{width:132px;height:132px;background:#15151a;padding:8px;border-radius:12px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:6px;transform:rotate(-7deg);box-shadow:0 15px 30px #0006}.tile-art i{border-radius:5px;background:#29292f}.tile-art i:nth-child(2){background:#f6d46b;color:#282522;font:700 16px var(--display);display:grid;place-items:center}.tile-art i:nth-child(5){background:#efa46d;color:#282522;font:700 18px var(--display);display:grid;place-items:center}.tile-art i:nth-child(7){background:#fa6c94;color:#282522;font:700 16px var(--display);display:grid;place-items:center}
+    .footer{border-top:1px solid #ffffff12;margin-top:44px;padding-top:17px;display:flex;justify-content:space-between;color:#85828c;font:10px var(--mono);letter-spacing:.3px}.footer b{color:#b1aeb7;font-weight:400}
+    .game-view{display:none;animation:appear .25s ease}.game-view.active{display:block}.home-view.hidden{display:none}.game-heading{display:flex;align-items:center;justify-content:space-between;padding:26px 0 19px}.back-button{border:0;background:none;display:flex;align-items:center;gap:9px;color:#bcb9c2;cursor:pointer;padding:8px 0;font:11px var(--mono)}.back-button:hover{color:var(--lime)}.game-heading h1{font:600 24px var(--display);margin:0;letter-spacing:-1px}.game-shell{max-width:760px;margin:5px auto;background:var(--panel);border:1px solid #ffffff12;border-radius:16px;padding:22px;min-height:430px;position:relative}.game-caption{color:var(--muted);font:10px var(--mono);letter-spacing:.7px;text-transform:uppercase}.status-pill{border:1px solid #ffffff1c;border-radius:30px;color:#c7c4cd;padding:8px 11px;font:10px var(--mono)}.heading-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:17px}.hint{color:#8f8c96;font:10px var(--mono);text-align:center;margin:15px 0 2px}.primary{border:0;border-radius:9px;background:var(--lime);color:#1a1b18;font-weight:700;font-size:12px;padding:11px 16px;cursor:pointer;transition:transform .15s,filter .15s}.primary:hover{transform:translateY(-1px);filter:brightness(1.06)}.secondary{border:1px solid #ffffff22;background:#ffffff08;border-radius:9px;padding:10px 14px;color:#ece9ef;font-size:11px;cursor:pointer}.secondary:hover{background:#ffffff14}
+    /* Blackjack */
+    .table{position:relative;min-height:347px;border-radius:12px;background:radial-gradient(ellipse at center,#21634d 0%,#174937 57%,#113b30 100%);border:8px solid #9b694c;box-shadow:inset 0 0 0 2px #d2a47c,inset 0 0 38px #061f18;overflow:hidden;padding:21px;display:flex;flex-direction:column;justify-content:space-between}.table:before{content:'';position:absolute;inset:10px;border:1px solid #ffffff21;border-radius:48% / 21%;pointer-events:none}.table-label{font:9px var(--mono);color:#d4e5d8aa;letter-spacing:1.2px;text-align:center}.hand-area{z-index:1;min-height:114px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px}.hand-name{font:10px var(--mono);color:#d6dfd8;letter-spacing:1px;text-transform:uppercase}.cards{height:91px;display:flex;align-items:center;justify-content:center;padding-left:10px}.card{width:59px;height:83px;border-radius:7px;background:#f5f0e9;color:#27242a;margin-left:-10px;box-shadow:0 4px 10px #00130c9c;position:relative;padding:7px;font:700 17px var(--display)}.card.dealt{z-index:3}.card.flipped{animation:flipcard .48s cubic-bezier(.22,.68,.25,1) both;transform-style:preserve-3d;backface-visibility:hidden}.card.red{color:#ca4164}.card .suit{position:absolute;left:0;right:0;top:27px;text-align:center;font-size:26px}.card.backcard{background:repeating-linear-gradient(45deg,#d56080,#d56080 5px,#f08199 5px,#f08199 7px);border:4px solid #f6eae6}.totals{color:#fff;background:#071d176b;padding:5px 10px;border-radius:20px;font:10px var(--mono);min-height:24px}.table-message{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap;background:#101014e8;border:1px solid #ffffff33;padding:13px 20px;border-radius:9px;font:600 14px var(--display);box-shadow:0 10px 40px #0008}.table-message:not(:empty){animation:messagePop .32s ease-out both}.table-message:empty{display:none}.blackjack-footer{display:flex;justify-content:center;gap:9px;margin-top:15px}.blackjack-footer .primary{min-width:92px}.bankroll{font:10px var(--mono);color:var(--lime)}
+    .chip-banks{display:flex;align-items:center;justify-content:flex-end;gap:8px}.two-chip-banks{display:flex;align-items:center;gap:7px}.chip-banks>[hidden]{display:none!important}.two-chip-banks[hidden]{display:none}.two-chip-banks .bankroll{padding:5px 8px 5px 6px;gap:7px}.two-chip-banks .chip-icon{width:28px;height:28px;font:700 12px var(--mono)}.two-chip-banks .bankroll strong{font-size:19px}.blackjack-options{display:flex;justify-content:center;align-items:center;gap:8px;margin:0 0 12px;flex-wrap:wrap}.mode-label,.bet-note{font:9px var(--mono);letter-spacing:.5px;color:#aaa7b0}.mode-label{margin-right:3px}.bet-note{margin-left:7px}.mode-button{cursor:pointer;border:1px solid #ffffff22;background:#ffffff08;border-radius:8px;padding:8px 11px;color:#cbc8d0;font-size:10px}.mode-button.selected{background:#c5f278;color:#20221b;border-color:#c5f278;font-weight:800}.mode-button:disabled{opacity:.5;cursor:not-allowed}.table.two-player{min-height:442px}.hand-area.active-hand .hand-name{color:#c5f278}.hand-area[hidden]{display:none!important}
+    .deck-stack{position:absolute;z-index:1;left:18px;top:50%;width:62px;height:116px;transform:translateY(-50%);display:flex;justify-content:center}.deck-stack i{position:absolute;top:5px;left:3px;width:53px;height:76px;border:3px solid #f4e9df;border-radius:7px;background:repeating-linear-gradient(45deg,#985064,#985064 5px,#bd7180 5px,#bd7180 7px);box-shadow:0 3px 7px #00190f88}.deck-stack i:nth-child(1){transform:translate(-4px,-4px) rotate(-7deg)}.deck-stack i:nth-child(2){transform:translate(-2px,-2px) rotate(-3deg)}.deck-stack i.deck-top{display:grid;place-items:center;transform:rotate(1deg);color:#f8ecdf}.deck-stack i b{width:23px;height:23px;border:1px solid #ffffff9c;border-radius:50%;display:grid;place-items:center;font:14px var(--display)}.deck-stack .deck-count{position:absolute;top:85px;color:#f2e4d0;font:11px var(--mono)}.deck-stack small{position:absolute;top:102px;color:#c0d3c7;font:8px var(--mono);letter-spacing:1px}
+    .card.dealt{z-index:3;will-change:transform,opacity}.bankroll{display:flex;align-items:center;gap:9px;padding:6px 12px 6px 7px;border:1px solid #a5874f;border-radius:11px;background:linear-gradient(145deg,#252920,#171b17);color:#f1d683;box-shadow:0 4px 14px #0003}.bankroll>span:last-child{display:grid;gap:1px}.bankroll small{color:#d7c58f;font:8px var(--mono);letter-spacing:1px}.bankroll strong{color:#fff0b0;font:800 23px/.95 var(--display);min-width:40px}.chip-icon{width:34px;height:34px;border:3px dotted #80683e;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#f7df8f 0,#c49b50 72%);color:#493a22;font-size:17px;box-shadow:0 0 0 2px #e0c47b,0 2px 5px #0006}
+    /* 2048 */
+    .board-head{display:flex;justify-content:space-between;align-items:center;margin:5px auto 14px;max-width:430px}.scores{display:flex;gap:8px}.score-box{background:#101014;border-radius:8px;text-align:center;min-width:74px;padding:7px 11px}.score-box small{display:block;color:#aaa6ae;font:9px var(--mono);text-transform:uppercase;letter-spacing:.7px}.score-box strong{font:600 15px var(--display)}.board-tools{display:flex;align-items:center;justify-content:space-between;max-width:430px;margin:0 auto 11px}.board-tools .hint{text-align:left;margin:0}.board{width:min(100%,430px);aspect-ratio:1;margin:auto;padding:10px;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);gap:9px;border-radius:12px;background:#333139;touch-action:none;position:relative}.cell{border-radius:7px;background:#48464d;display:flex;align-items:center;justify-content:center;font:700 clamp(20px,5.8vw,34px) var(--display);letter-spacing:-1px;transition:background .1s}.cell[data-value="2"]{background:#f0e9dc;color:#514c4a}.cell[data-value="4"]{background:#eddfbb;color:#51473a}.cell[data-value="8"]{background:#efa46d;color:#fffaf3}.cell[data-value="16"]{background:#f28b61;color:#fffaf3}.cell[data-value="32"]{background:#f27663;color:#fffaf3}.cell[data-value="64"]{background:#e75b57;color:#fffaf3}.cell[data-value="128"]{background:#edcf70;color:#fffaf3;font-size:clamp(17px,4.8vw,29px);box-shadow:0 0 20px #edcf7066}.cell[data-value="256"]{background:#edc64f;color:#fffaf3;font-size:clamp(17px,4.8vw,29px);box-shadow:0 0 22px #edc64f88}.cell[data-value="512"]{background:#e9b83f;color:#fffaf3;font-size:clamp(16px,4.7vw,28px)}.cell[data-value="1024"],.cell[data-value="2048"]{background:#ed9f27;color:#fffaf3;font-size:clamp(13px,4vw,24px);box-shadow:0 0 24px #ed9f2799}.cell.super{background:#47374d;color:#f1c9ff;font-size:clamp(14px,4.3vw,25px)}.board-overlay{position:absolute;inset:0;background:#101014c9;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;border-radius:12px}.board-overlay.show{display:flex}.board-overlay strong{font:600 30px var(--display)}
+    @keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}@keyframes deal{from{opacity:0;transform:translateY(-12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes flipcard{from{opacity:.65;transform:rotateY(48deg)}to{opacity:1;transform:rotateY(0)}}@keyframes messagePop{from{opacity:0;transform:translate(-50%,-46%) scale(.98)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+    @media(max-width:780px){.shell{padding:0 22px 35px}.hero{padding:50px 0 38px;grid-template-columns:1fr .75fr;gap:10px}.hero-art{transform:scale(.8)}.game-card{min-height:275px;padding:13px}.illustration{height:125px}.game-grid{gap:11px}.hero h1{letter-spacing:-3.5px}}
+    @media(max-width:600px){.shell{padding:0 17px 28px}.topbar{height:66px}.header-note{font-size:9px}.hero{grid-template-columns:1fr;padding:43px 0 26px}.hero-art{height:155px;position:absolute;right:3px;top:77px;transform:scale(.55);transform-origin:top right;opacity:.8}.hero-copy{font-size:14px;max-width:340px}.hero h1{font-size:58px;max-width:340px;margin-top:16px;position:relative;z-index:1}.hero-copy{position:relative;z-index:1}.section-head h2{font-size:20px}.section-head p{font-size:9px}.game-grid{grid-template-columns:1fr;gap:10px}.game-card{min-height:0;height:155px;padding:14px 15px 12px 128px}.card-top{position:absolute;left:15px;top:12px;right:15px}.illustration{position:absolute;left:0;top:22px;width:125px;height:120px;transform:scale(.8)}.game-number{display:none}.card-title{font-size:21px;margin:25px 0 3px}.card-desc{max-width:220px;font-size:11px;margin-bottom:8px}.play-link{font-size:10px}.footer{margin-top:28px;font-size:9px}.game-heading{padding:18px 0 14px}.game-heading h1{font-size:20px}.game-shell{padding:14px 11px;min-height:0}.table{padding:15px 8px;min-height:335px;border-width:6px}.table.two-player{min-height:420px}.deck-stack{left:8px;transform:translateY(-50%) scale(.82);transform-origin:left center}.card{width:51px;height:74px;font-size:15px;padding:6px}.card .suit{top:23px;font-size:23px}.hand-area{min-height:105px}.hint{font-size:9px}.blackjack-footer{gap:6px}.blackjack-footer .primary{min-width:77px;padding:10px 8px}.board{gap:6px;padding:7px;width:min(100%,390px)}.cell{border-radius:5px}.board-head,.board-tools{max-width:min(100%,390px)}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    /* The lobby uses a soft palette; individual games keep the dark arcade theme. */
+    body.home-open{background:radial-gradient(ellipse 72% 65% at 86% 18%,#eef0f2 0%,transparent 100%),radial-gradient(ellipse 68% 76% at 8% 78%,#edf0e8 0%,transparent 100%),#f7f4ed;color:#26252b;transition:background .25s,color .25s}
+    body.home-open .topbar{position:relative;background:#f0ede6;border-bottom:1px solid #81796e;box-shadow:0 3px 8px #30281e0d}
+    body.home-open .topbar:after{content:'';position:absolute;left:0;right:0;bottom:-2px;height:2px;background:linear-gradient(90deg,#817b71 0%,#918d7e 38%,#939783 70%,#7b8c73 100%);opacity:.9}
+    body.home-open .sun{background:linear-gradient(140deg,#f5d778,#e9ad68);filter:drop-shadow(0 0 30px #d7aa5430)}
+    body.home-open .brand{color:#26252b}
+    body.home-open .hero h1 span{color:#b94e68}
+    body.home-open .sun:after{background:#f7f4ed;box-shadow:0 17px 0 #f7f4ed,0 34px 0 #f7f4ed,0 51px 0 #f7f4ed}
+    body.home-open .orbit{border-color:#29282c22}
+    body.home-open .spark.a{color:#83a96b}
+    body.home-open .spark.b{color:#b88e46}
+    body.home-open .game-card{cursor:pointer;background:#fffefa;border-color:#d8d1c5;box-shadow:0 0 0 1px #ffffffb8,0 0 23px #b94e681c,0 9px 25px #51432b12}
+    body.home-open .game-card:nth-child(2){box-shadow:0 0 0 1px #ffffffb8,0 0 23px #7d9ecc24,0 9px 25px #51432b12}
+    body.home-open .game-card:nth-child(3){box-shadow:0 0 0 1px #ffffffb8,0 0 23px #83a96b24,0 9px 25px #51432b12}
+    body.home-open .game-card:hover{background:#fff;border-color:#beb5a6;box-shadow:0 0 0 1px #fff,0 0 30px #b94e6833,0 14px 30px #51432b20}
+    body.home-open .game-card:nth-child(2):hover{box-shadow:0 0 0 1px #fff,0 0 30px #7d9ecc3c,0 14px 30px #51432b20}
+    body.home-open .game-card:nth-child(3):hover{box-shadow:0 0 0 1px #fff,0 0 30px #83a96b3c,0 14px 30px #51432b20}
+    body.home-open .game-card:focus-visible{outline:2px solid #7d705e;outline-offset:4px}
+    body.home-open .card-title{color:#29272e}
+    body.home-open .play-link{color:#38363d}
+    body.home-open .play-link span{background:#eae6de;color:#514d55}
+    body.home-open .play-link:hover span{background:#b94e68;color:#fff}
+
+    /* Pixel Party: a crisp, indie arcade skin built from CSS shapes and textures. */
+    :root{color-scheme:dark;--bg:#101426;--panel:#1a2038;--panel2:#252d4a;--line:#3d4666;--muted:#aab3cf;--text:#f8f4e8;--pink:#ff7294;--lime:#b8f36b;--blue:#69d9e8;--yellow:#d3c69e;--mono:'Silkscreen';--sans:'Silkscreen';--display:'Press Start 2P'}
+    html{background-color:#101426;image-rendering:pixelated}
+    body{font-family:var(--sans);background-color:var(--bg);background-image:radial-gradient(#8392c522 1px,transparent 1px),linear-gradient(180deg,#161d34 0%,#101426 70%);background-size:8px 8px,100% 100%;font-size:15px;line-height:1.55;image-rendering:pixelated}
+    .shell{max-width:1120px}
+    .topbar{height:76px;border-bottom:3px solid #38415f;box-shadow:0 4px 0 #080c1b}
+    .brand{font:700 15px var(--display);letter-spacing:0;text-transform:uppercase}
+    .brand-mark{transform:none;gap:2px;width:28px;height:28px}
+    .brand-mark i{border-radius:0;box-shadow:2px 2px 0 #080c1b}
+    .header-note,.game-caption,.game-number,.card-tag,.mode-label,.bet-note,.mode-button,.hint,.status-pill,.back-button,.game-heading h1,.table-label,.hand-name,.totals,.deck-stack small,.deck-count,.score-box small{font-family:var(--mono);letter-spacing:.5px}
+    .header-note{color:#aeb9d5}
+    .hero{padding:62px 0 48px;gap:16px}
+    .hero h1{font:400 clamp(25px,4vw,44px)/1.6 var(--display);letter-spacing:0;margin:12px 0 17px;text-shadow:4px 4px 0 #080c1b}
+    .hero h1 span{color:#ff7294;text-shadow:4px 4px 0 #722d58}
+    .eyebrow{color:var(--lime);font:700 13px var(--mono)}
+    .eyebrow:before{height:4px;width:16px;box-shadow:4px 0 0 #101426,8px 0 0 currentColor}
+    .hero-copy{font-size:16px;color:#c1c9dd;line-height:1.8}
+    .hero-art{image-rendering:pixelated}
+    .sun{width:172px;height:172px;border-radius:0;clip-path:polygon(34% 0,66% 0,66% 7%,82% 7%,82% 17%,92% 17%,92% 34%,100% 34%,100% 66%,92% 66%,92% 82%,82% 82%,82% 92%,66% 92%,66% 100%,34% 100%,34% 92%,18% 92%,18% 82%,8% 82%,8% 66%,0 66%,0 34%,8% 34%,8% 18%,18% 18%,18% 8%,34% 8%);background:repeating-linear-gradient(0deg,#d3c69e 0 12px,#ffad55 12px 24px);filter:none;box-shadow:8px 8px 0 #080c1b}
+    .sun:after{height:8px;top:62%;background:#101426;box-shadow:0 16px 0 #101426,0 32px 0 #101426,0 48px 0 #101426}
+    .orbit{width:270px;height:108px;border:3px dashed #8793b8;border-radius:0;transform:rotate(-18deg)}
+    .orbit:before{width:12px;height:12px;border-radius:0;background:var(--blue);box-shadow:4px 4px 0 #101426}
+    .spark{font-family:var(--display);text-shadow:3px 3px #080c1b}
+    .spark.a{color:var(--blue)}.spark.b{color:var(--pink)}
+    .section-head{align-items:center;margin:3px 0 15px;padding:12px 0;border-top:3px solid #3d4666;border-bottom:3px solid #3d4666}
+    .section-head h2{font:400 14px var(--display);letter-spacing:0;text-transform:uppercase}
+    .section-head p{color:#aab3cf;font-size:13px}
+    .game-grid{gap:18px}
+    .game-card{min-height:285px;border:3px solid #687493;border-radius:0;padding:15px;background-color:#1b2440;background-image:radial-gradient(#ffffff15 1px,transparent 1px),linear-gradient(145deg,#252d4a,#171d33);background-size:6px 6px,100% 100%;box-shadow:6px 6px 0 #080c1b;transition:transform .12s steps(2),box-shadow .12s steps(2),border-color .12s steps(2)}
+    .game-card:hover{transform:translate(-2px,-2px);border-color:var(--yellow);background-color:#222b49;box-shadow:9px 9px 0 #080c1b}
+    .game-number,.card-tag{color:#bec7dc}.card-tag{border:2px solid #64708e;border-radius:0;padding:4px 7px}
+    .illustration{height:140px;image-rendering:pixelated}
+    .playing-card{border:3px solid #292a40;border-radius:0;box-shadow:4px 4px 0 #080c1b;font-family:var(--display);font-size:24px}
+    .playing-card.back{background:repeating-conic-gradient(#ff7294 0 25%,#bb4e78 0 50%) 0 0/8px 8px}
+    .playing-card.front{color:#d64c78}
+    .tile-art{border:3px solid #7d89a8;border-radius:0;background:#131a2f;gap:5px;box-shadow:5px 5px 0 #080c1b;transform:none}
+    .tile-art i{border-radius:0;background:#29324d;box-shadow:2px 2px 0 #080c1b}
+    .card-title{font:400 13px var(--display);letter-spacing:0;margin:7px 0 0;color:#fff7e3}
+    .play-link{font:700 12px var(--mono);text-transform:uppercase}.play-link span{width:24px;height:24px;border-radius:0;background:#35405f;box-shadow:2px 2px 0 #080c1b}.play-link:hover span{transform:translate(1px,-1px);background:var(--pink)}
+    .footer{border-top:3px solid #38415f;color:#a4aec9;padding-top:13px;font-size:12px}
+    .footer b{color:#e3dcbf}
+    .game-heading{padding:24px 0 18px}.game-heading h1{font:400 17px/1.5 var(--display);letter-spacing:0;text-transform:uppercase;text-shadow:3px 3px 0 #080c1b}
+    .back-button{font-size:13px;color:#d1d9e9}.back-button:hover{color:var(--yellow)}
+    .status-pill{border:2px solid #515d7e;border-radius:0;background:#1b2239;color:#d8dfef;box-shadow:3px 3px 0 #080c1b;padding:5px 8px;font-size:11px}
+    .game-shell{border:3px solid #4b577a;border-radius:0;background-color:#1b2035;background-image:radial-gradient(#ffffff0c 1px,transparent 1px);background-size:6px 6px;padding:20px;box-shadow:7px 7px 0 #080c1b;min-height:430px}
+    .game-caption{color:#c0c9df;font-size:13px}
+    .primary,.secondary,.mode-button{border-radius:0;box-shadow:3px 3px 0 #080c1b;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.5px;transition:transform .1s steps(2),box-shadow .1s steps(2),filter .1s steps(2)}
+    .primary{background:var(--lime);color:#172016;border:2px solid #e3ffb4;font-size:12px}
+    .secondary,.mode-button{background:#29334f;border:2px solid #677493;color:#f8f4e8;font-size:11px}
+    .primary:hover,.secondary:hover,.mode-button:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 #080c1b}
+    .primary:active,.secondary:active,.mode-button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #080c1b}
+    .mode-button.selected{background:var(--yellow);color:#222033;border-color:#fff0a7}
+    .mode-button:disabled{opacity:.45}
+    .hint{color:#bac3da;font-size:12px;line-height:1.8}
+    .bankroll{border:2px solid #e5bf62;border-radius:0;background:#242a3b;color:#f1d683;box-shadow:3px 3px 0 #080c1b}
+    .bankroll small{font-family:var(--mono);font-size:9px}.bankroll strong{font-family:var(--display);font-size:16px}
+    .chip-icon{border-radius:0;border:2px dashed #735b37;box-shadow:2px 2px 0 #080c1b}
+    .two-chip-banks .chip-icon{font-family:var(--mono)}
+    .blackjack-options{gap:9px;margin-bottom:15px}.mode-label,.bet-note{color:#b8c1d7;font-size:12px}
+    .table{border-radius:0;border:8px solid #90613f;background-color:#0c584d;background-image:repeating-conic-gradient(#ffffff0a 0 25%,transparent 0 50%) 0 0/16px 16px,linear-gradient(135deg,#126455,#10483f);box-shadow:inset 0 0 0 3px #c69b5b,7px 7px 0 #080c1b,inset 0 0 0 8px #0a3b36}
+    .table:before{inset:10px;border:2px dashed #cde2c02a;border-radius:0}
+    .table-label{color:#d2e3d5;font-size:10px}
+    .hand-area{gap:7px}.hand-name{font-size:12px;color:#e3ecd9}.hand-area.active-hand .hand-name{color:#f8d465;text-shadow:2px 2px #402a28}
+    .cards{image-rendering:pixelated}.card{border:2px solid #393544;border-radius:0;box-shadow:3px 3px 0 #071b17;font-family:var(--display);font-size:12px;padding:6px}.card .suit{top:25px;font-size:21px}.card.backcard{border:4px solid #f6eae6;background:repeating-conic-gradient(#d56080 0 25%,#ab476c 0 50%) 0 0/8px 8px}
+    .totals{border:1px solid #b8d4b77a;border-radius:0;background:#082b25;font-size:11px;color:#f9f4dc}
+    .deck-stack i{border-radius:0;border:3px solid #f4e9df;background:repeating-conic-gradient(#985064 0 25%,#bd7180 0 50%) 0 0/8px 8px;box-shadow:3px 3px 0 #071b17}
+    .deck-stack .deck-count,.deck-stack small{color:#f4e9d3}
+    .table-message{border:3px solid var(--yellow);border-radius:0;background:#171c31;box-shadow:5px 5px 0 #080c1b;font:400 12px/1.7 var(--display);white-space:normal;text-align:center;max-width:85%;padding:12px 15px}
+    .blackjack-footer{gap:10px}.blackjack-footer button{min-height:42px}
+    .board-head,.board-tools{max-width:430px}.score-box{border:2px solid #657293;border-radius:0;background:#171d32;box-shadow:3px 3px 0 #080c1b}.score-box small{font-size:11px}.score-box strong{font:700 17px var(--mono);color:var(--yellow)}
+    .board{border:4px solid #717c9d;border-radius:0;background-color:#11172b;background-image:radial-gradient(#a4b1d31c 1px,transparent 1px);background-size:6px 6px;box-shadow:inset 0 0 0 3px #080c1b,5px 5px 0 #080c1b}
+    .cell{border:2px solid #414a67;border-radius:0;background:#252d48;box-shadow:2px 2px 0 #080c1b;font-family:var(--display);font-size:clamp(16px,4.5vw,28px);transition:background .1s steps(2)}
+    .cell[data-value="2"]{background:#eee4c9;color:#423a43;border-color:#fff4dd}.cell[data-value="4"]{background:#e9d691;color:#4d4434;border-color:#f8e9ac}.cell[data-value="8"]{background:#ed9b68;color:#fff8e5;border-color:#ffd0a4}.cell[data-value="16"]{background:#eb775e;color:#fff8e5;border-color:#ffac87}.cell[data-value="32"]{background:#e85965;color:#fff8e5;border-color:#ff9aa0}.cell[data-value="64"]{background:#d94869;color:#fff8e5;border-color:#ff8eaa}
+    .cell[data-value="128"],.cell[data-value="256"],.cell[data-value="512"],.cell[data-value="1024"],.cell[data-value="2048"]{border-color:#fff0a7;box-shadow:3px 3px 0 #080c1b,0 0 0 2px #d3c69e}
+    .board-overlay{border-radius:0;border:3px dashed var(--yellow);background:#101426e8}.board-overlay strong{font:400 17px/1.5 var(--display);text-align:center;color:var(--yellow)}
+    .game-card:focus-visible,.back-button:focus-visible,button:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+    body.home-open{color:var(--text);background-color:#101426;background-image:radial-gradient(#8392c522 1px,transparent 1px),linear-gradient(180deg,#161d34 0%,#101426 70%);background-size:8px 8px,100% 100%}
+    body.home-open .topbar{background:#12192c;border-bottom:3px solid #38415f;box-shadow:0 4px 0 #080c1b}
+    body.home-open .topbar:after{display:none}
+    body.home-open .brand{color:var(--text)}body.home-open .hero h1 span{color:#ff7294}
+    body.home-open .sun{background:repeating-linear-gradient(0deg,#d3c69e 0 12px,#ffad55 12px 24px);filter:none}
+    body.home-open .sun:after{background:#101426;box-shadow:0 16px 0 #101426,0 32px 0 #101426,0 48px 0 #101426}
+    body.home-open .orbit{border-color:#8793b8}body.home-open .spark.a{color:var(--blue)}body.home-open .spark.b{color:var(--pink)}
+    body.home-open .game-card,body.home-open .game-card:nth-child(2),body.home-open .game-card:nth-child(3){background-color:#1b2440;border-color:#687493;box-shadow:6px 6px 0 #080c1b}
+    body.home-open .game-card:hover,body.home-open .game-card:nth-child(2):hover,body.home-open .game-card:nth-child(3):hover{background-color:#222b49;border-color:var(--yellow);box-shadow:9px 9px 0 #080c1b}
+    body.home-open .card-title{color:#fff7e3}body.home-open .play-link{color:var(--text)}body.home-open .play-link span{background:#35405f;color:var(--text)}body.home-open .play-link:hover span{background:var(--pink);color:#101426}
+    @media(max-width:780px){.hero{padding:48px 0 38px}.game-grid{gap:14px}.game-card{min-height:265px}.hero h1{font-size:clamp(23px,4.2vw,37px)}}
+    @media(max-width:600px){.topbar{height:66px}.brand{font-size:12px}.header-note{font-size:10px}.hero{padding:38px 0 26px}.hero h1{font-size:27px;line-height:1.65;max-width:320px}.hero-art{opacity:.45}.game-grid{gap:12px}.game-card{height:155px;min-height:0;padding:13px 14px 12px 128px}.card-title{font-size:11px;margin:25px 0 3px}.card-desc{font-size:12px}.play-link{font-size:11px}.section-head h2{font-size:11px}.section-head p{font-size:10px}.game-heading h1{font-size:13px}.game-shell{padding:13px 10px}.game-caption{font-size:11px}.chip-banks{gap:4px}.two-chip-banks{gap:4px}.two-chip-banks .bankroll{padding:4px 5px}.two-chip-banks .chip-icon{width:22px;height:22px;font-size:10px}.two-chip-banks .bankroll strong{font-size:12px}.two-chip-banks .bankroll small{font-size:8px}.blackjack-options{gap:6px}.mode-button{padding:6px 8px;font-size:10px}.bet-note{font-size:10px}.table{border-width:6px}.deck-stack{transform:translateY(-50%) scale(.72)}.card{width:49px;height:71px;font-size:10px}.card .suit{top:22px;font-size:19px}.blackjack-footer button{font-size:10px}.hint{font-size:10px}.game-heading .status-pill{font-size:9px}}
+    @media(prefers-reduced-motion:reduce){.game-card,.primary,.secondary,.mode-button,.play-link span{transition:none!important}}
+
+
+  </style>
+  <link rel="stylesheet" href="snow-rider.css">
+  <link rel="stylesheet" href="arcade-shop.css">
+  <link rel="stylesheet" href="site-finish.css">
+</head>
+<body class="home-open">
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="#home" aria-label="Pixel Party home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>pixel party</a>
+      <button class="wallet-button" id="openShop" aria-label="Open coin shop"><span class="coin-mark" aria-hidden="true"></span><strong data-coin-balance>0</strong><span>Shop</span></button>
+    </header>
+
+    <main>
+      <section class="home-view" id="homeView">
+        <div class="hero">
+          <h1>Games</h1>
+        </div>
+        <div class="game-grid">
+          <article class="game-card" data-game="blackjack" role="button" tabindex="0" aria-label="Open Blackjack"><div class="illustration" aria-hidden="true"><div class="cards-art"><div class="playing-card back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8 7 3 9 3 14a5 5 0 0 0 8 4l-2 4h6l-2-4a5 5 0 0 0 8-4c0-5-5-7-9-12Z"/></svg></div><div class="playing-card front"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21 3 12C-3 3 8-1 12 6c4-7 15-3 9 6Z"/></svg></div></div></div><h3 class="card-title">Blackjack</h3></article>
+          <article class="game-card" data-game="2048" role="button" tabindex="0" aria-label="Open 2048"><div class="illustration" aria-hidden="true"><div class="tile-art"><i></i><i>2</i><i></i><i></i><i>4</i><i></i><i>8</i><i></i><i></i></div></div><h3 class="card-title">2048</h3></article>
+          <article class="game-card" data-game="snow" role="button" tabindex="0" aria-label="Open Snow Rider 3D"><div class="illustration" aria-hidden="true"><svg class="rider-preview" viewBox="0 0 180 140" aria-hidden="true"><path d="M8 115 64 18 91 65 119 25 174 115Z" fill="#a8cadb"/><path d="m64 18-17 30 18-6 15 5Zm55 7-16 30 18-9 13 8Z" fill="#f3f8fa"/><ellipse cx="94" cy="119" rx="62" ry="10" fill="#bed4de"/><g transform="rotate(-15 90 95)"><path d="M43 115h89q17 0 17-15M35 99h89q17 0 17-15" fill="none" stroke="#7095aa" stroke-width="5" stroke-linecap="round"/><path d="M55 109V82m64 27V82M48 94V70m64 24V70" stroke="#c8574a" stroke-width="5"/><path d="m44 74 66-3 20 15-69 4Z" fill="#c28f5d" stroke="#e2ba87" stroke-width="3"/><path d="m60 76 15 11m0-12 15 11m0-12 15 11" stroke="#946642" stroke-width="2"/></g></svg></div><h3 class="card-title">Snow Rider 3D</h3></article>
+        </div>
+      </section>
+
+      <section class="game-view" id="blackjackView" aria-label="Blackjack game">
+        <div class="game-heading"><button class="back-button" data-home>← <span>All games</span></button><h1>Blackjack</h1></div>
+        <div class="game-shell"><div class="heading-row"><div class="chip-banks"><span class="bankroll" id="singleChipBank"><span class="chip-icon" aria-hidden="true"></span><span><small>CHIP BANK</small><strong id="chipsOne">500</strong></span></span><div class="two-chip-banks" id="twoChipBanks" hidden><span class="bankroll"><span class="chip-icon" aria-hidden="true">1</span><span><small>PLAYER 1</small><strong id="chipsPlayerOne">500</strong></span></span><span class="bankroll"><span class="chip-icon" aria-hidden="true">2</span><span><small>PLAYER 2</small><strong id="chipsPlayerTwo">500</strong></span></span></div></div></div>
+          <div class="blackjack-options"><span class="mode-label">PLAYERS</span><button class="mode-button selected" data-player-count="1" aria-pressed="true">1 player</button><button class="mode-button" data-player-count="2" aria-pressed="false">2 players</button><span class="bet-note">100 chips / hand</span></div>
+          <div class="table"><div class="table-label">DEALER STANDS ON 17</div><div class="deck-stack" id="bjDeck" aria-label="52 cards in draw deck"><i></i><i></i><i class="deck-top"><b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a5 5 0 0 0-4 8 5 5 0 1 0 3 8l-2 4h6l-2-4a5 5 0 1 0 3-8 5 5 0 0 0-4-8Z"/></svg></b></i><span class="deck-count" id="deckCount">52</span><small>DECK</small></div><div class="hand-area"><span class="hand-name">Dealer <span id="dealerTotal"></span></span><div class="cards" id="dealerCards"></div></div><div class="hand-area" id="playerOneArea"><span class="hand-name" id="playerOneName">You</span><div class="cards" id="playerOneCards"></div><span class="totals" id="playerOneTotal"></span></div><div class="hand-area" id="playerTwoArea" hidden><span class="hand-name" id="playerTwoName">Player 2</span><div class="cards" id="playerTwoCards"></div><span class="totals" id="playerTwoTotal"></span></div><div class="table-message" id="blackjackMessage"></div></div>
+          <div class="blackjack-footer"><button class="secondary" id="newHand">New hand</button><button class="primary" id="hit">Hit</button><button class="primary" id="stand">Stand</button></div><p class="hint">Bet 100 · wins pay 200 + margin bonus · losses cost 200 + margin bonus (bank-capped) · pushes return 100</p>
+        </div>
+      </section>
+
+      <section class="game-view" id="2048View" aria-label="2048 game">
+        <div class="game-heading"><button class="back-button" data-home>← <span>All games</span></button><h1>2048</h1></div>
+        <div class="game-shell"><div class="board-head"><div class="scores"><div class="score-box"><small>Score</small><strong id="score">0</strong></div><div class="score-box"><small>Best</small><strong id="best">0</strong></div></div></div><div class="board-tools"><p class="hint">Use arrow keys or swipe to move tiles</p><button class="secondary" id="restart2048">New game</button></div><div class="board" id="board" role="application" aria-label="2048 tile board"><div class="board-overlay" id="boardOverlay"><strong id="boardMessage">Game over</strong><button class="primary" id="again2048">Try again</button></div></div></div>
+      </section>
+
+      <section class="game-view" id="snowView" aria-label="Snow Rider 3D game">
+        <div class="game-heading"><button class="back-button" data-home>← <span>All games</span></button><h1>Snow Rider 3D</h1><button class="secondary" id="riderFullscreen">Full screen</button></div>
+        <div class="rider-shell">
+          <div class="rider-stage" id="riderStage">
+            <canvas id="riderCanvas" tabindex="0" aria-label="Snow sled game. Arrow keys steer, Space jumps, P pauses."></canvas>
+            <div class="rider-hud"><div class="rider-stat">METRES<strong id="riderDistance">0</strong></div><div class="rider-stat">GIFTS<strong id="riderGifts">0</strong></div><div class="rider-stat">KM/H<strong id="riderSpeed">65</strong></div><div class="rider-stat">BEST<strong id="riderBest">0</strong></div><button class="rider-pause" id="riderPause" aria-label="Pause or resume">Ⅱ</button></div>
+            <div class="rider-menu" id="riderMenu"><h2 id="riderTitle">SNOW<br>RIDER 3D</h2><p id="riderDescription">Steer around obstacles, jump over ravines, and collect gifts.</p><button class="rider-start" id="riderStart">Start ride</button><div class="rider-garage" aria-label="Choose a sleigh"><button data-sled="0" aria-pressed="true">Classic</button><button data-sled="1" aria-pressed="false">Toboggan</button><button data-sled="2" aria-pressed="false">Alpine racer</button></div><span class="rider-wallet" id="riderWallet">0 total gifts</span></div>
+            <div class="rider-controls"><div><button id="rider-left" aria-label="Steer left">←</button><button id="rider-right" aria-label="Steer right">→</button></div><button id="rider-jump" aria-label="Jump">↑</button></div>
+          </div>
+          <div class="rider-help"><span><kbd>← → / A D</kbd> steer &nbsp; <kbd>↑ / SPACE</kbd> jump &nbsp; <kbd>P</kbd> pause</span></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <dialog class="arcade-shop" id="arcadeShop" aria-labelledby="shopTitle">
+    <div class="shop-header"><h2 id="shopTitle">Coin shop</h2><button id="closeShop" autofocus aria-label="Close shop">Close</button></div>
+    <p class="shop-balance"><strong data-coin-balance>0</strong> coins</p>
+    <div class="shop-grid" id="shopItems"></div>
+    <p class="shop-message" id="shopMessage" role="status"></p>
+    <div class="shop-rules"><details><summary>Coin rewards</summary><p>Each milestone earns 10 coins, and partial progress carries across rounds.</p><ul><li>Blackjack requires 2 win-equivalents: a win counts as 1, a draw as ½, and a loss as ¼. Two-player hands are averaged.</li><li>2048 requires 512 points from merges.</li><li>Snow Rider requires 750 metres, with each gift adding 25 metres toward the reward. Coins are awarded when the ride ends.</li></ul><p>Betting chips are separate from shop coins.</p></details>
+      <div class="shop-progress"><label><span id="progress-label-blackjack"></span><progress id="progress-blackjack" max="100" value="0"></progress></label><label><span id="progress-label-2048"></span><progress id="progress-2048" max="100" value="0"></progress></label><label><span id="progress-label-snow"></span><progress id="progress-snow" max="100" value="0"></progress></label></div>
+    </div><p class="shop-storage" id="shopStorage"></p>
+  </dialog>
+  <div class="coin-toast" id="coinToast" role="status" hidden></div>
+  <script src="arcade-shop.js"></script>
+  <script>
+    (()=>{
+      const home=document.getElementById('homeView');let activeGame='';
+      function showGame(name){if(activeGame==='snow')window.SnowRider.close();activeGame=name;document.body.classList.remove('home-open');home.classList.add('hidden');document.querySelectorAll('.game-view').forEach(v=>v.classList.toggle('active',v.id===name+'View'));if(name==='2048'&&!grid.length)init2048();if(name==='snow')window.SnowRider.open();window.scrollTo({top:0,behavior:'smooth'});}
+      function showHome(){if(activeGame==='snow')window.SnowRider.close();activeGame='';document.body.classList.add('home-open');home.classList.remove('hidden');document.querySelectorAll('.game-view').forEach(v=>v.classList.remove('active'));window.scrollTo({top:0,behavior:'smooth'});}
+      document.querySelectorAll('.game-card').forEach(card=>{const open=()=>showGame(card.dataset.game);card.addEventListener('click',open);card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}})});document.querySelectorAll('[data-home]').forEach(b=>b.addEventListener('click',showHome));
+      window.addEventListener('hashchange',()=>{const h=location.hash.slice(1)==='slope'?'snow':location.hash.slice(1);if(['blackjack','2048','snow'].includes(h))showGame(h);else showHome()});
+
+      // Blackjack: shared chip bank, one or two hands, and a visible 52-card deck.
+      let coinRoundPending=false;
+      const bj={deck:[],dealer:[],players:[[],[]],visibleDealer:0,visiblePlayers:[0,0],chips:[500,500],playerCount:1,stood:[false,false],activePlayer:-1,playing:false,dealing:false,revealed:false};
+      const $=id=>document.getElementById(id);
+      function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+      function makeDeck(){const suits=['S','H','D','C'],ranks=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];bj.deck=shuffle(suits.flatMap(s=>ranks.map(r=>({s,r}))))}
+      function value(hand){let n=0,aces=0;hand.forEach(c=>{if(c.r==='A'){n+=11;aces++}else n+=['J','Q','K'].includes(c.r)?10:+c.r});while(n>21&&aces){n-=10;aces--}return n}
+      const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+      const suitPaths={"S": "M12 2C8 7 3 9 3 14a5 5 0 0 0 8 4l-2 4h6l-2-4a5 5 0 0 0 8-4c0-5-5-7-9-12Z", "H": "M12 21 3 12C-3 3 8-1 12 6c4-7 15-3 9 6Z", "D": "m12 1 9 11-9 11-9-11Z", "C": "M12 2a5 5 0 0 0-4 8 5 5 0 1 0 3 8l-2 4h6l-2-4a5 5 0 1 0 3-8 5 5 0 0 0-4-8Z"};
+      function suitIcon(s){return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${suitPaths[s]}"/></svg>`}
+      function cardEl(c,hidden=false,flip=false){const el=document.createElement('div');el.className='card'+(['H','D'].includes(c.s)?' red':'')+(hidden?' backcard':'')+(flip?' flipped':'');if(!hidden){el.innerHTML=`${c.r}<span class="suit">${suitIcon(c.s)}</span>`;el.setAttribute('aria-label',`${c.r} of ${{S:'spades',H:'hearts',D:'diamonds',C:'clubs'}[c.s]}`)}else el.setAttribute('aria-label','Face down card');return el}
+      function animateDeal(card){if(!card||!card.animate)return;const from=$('bjDeck').getBoundingClientRect(),to=card.getBoundingClientRect();const dx=from.left+from.width/2-(to.left+to.width/2),dy=from.top+from.height/2-(to.top+to.height/2);card.animate([{transform:`translate(${dx}px,${dy}px) scale(.92)`,opacity:.55},{transform:'translate(0,0) scale(1)',opacity:1}],{duration:matchMedia('(prefers-reduced-motion: reduce)').matches?1:520,easing:'cubic-bezier(.22,.68,.25,1)'})}
+      function renderBJ({animatePlayer=-1,animateDealer=false,flipHole=false}={}){
+        $('chipsOne').textContent=bj.chips[0].toLocaleString();$('chipsPlayerOne').textContent=bj.chips[0].toLocaleString();$('chipsPlayerTwo').textContent=bj.chips[1].toLocaleString();$('singleChipBank').hidden=bj.playerCount===2;$('twoChipBanks').hidden=bj.playerCount!==2;$('deckCount').textContent=bj.deck.length;
+        $('playerTwoArea').hidden=bj.playerCount<2;$('blackjackView').querySelector('.table').classList.toggle('two-player',bj.playerCount===2);
+        for(let i=0;i<bj.playerCount;i++){
+          const cards=$(`player${i?'Two':'One'}Cards`),visible=bj.players[i].slice(0,bj.visiblePlayers[i]);
+          cards.replaceChildren(...visible.map(c=>cardEl(c)));
+          if(i===animatePlayer)animateDeal(cards.lastElementChild);
+          $(`player${i?'Two':'One'}Total`).textContent=visible.length?'· '+value(visible):'';
+          const name=$(`player${i?'Two':'One'}Name`);name.textContent=bj.playerCount===1?'You':`Player ${i+1}${bj.playing&&bj.activePlayer===i?' · YOUR TURN':''}`;
+          $(`player${i?'Two':'One'}Area`).classList.toggle('active-hand',bj.playing&&bj.activePlayer===i);
+        }
+        const dealer=bj.dealer.slice(0,bj.visibleDealer);
+        $('dealerCards').replaceChildren(...dealer.map((c,i)=>cardEl(c,!bj.revealed&&i===1,bj.revealed&&flipHole&&i===1)));
+        if(animateDealer)animateDeal($('dealerCards').lastElementChild);
+        $('dealerTotal').textContent=dealer.length?'· '+(bj.revealed?value(dealer):dealer[0].r==='A'?'11 or 1':'?'):'';
+        $('newHand').disabled=bj.playing||bj.dealing;
+        $('hit').disabled=!bj.playing||bj.dealing;$('stand').disabled=!bj.playing||bj.dealing;
+        $('hit').style.opacity=$('stand').style.opacity=bj.playing&&!bj.dealing?'1':'.48';
+        document.querySelectorAll('.mode-button').forEach(button=>{const selected=Number(button.dataset.playerCount)===bj.playerCount;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));button.disabled=bj.playing||bj.dealing});
+      }
+      function finishBJ(message){bj.playing=false;bj.dealing=false;bj.activePlayer=-1;$('blackjackMessage').textContent=message;renderBJ()}
+      function availablePlayer(from){for(let i=from;i<bj.playerCount;i++)if(!bj.stood[i]&&value(bj.players[i])<21)return i;return -1}
+      async function dealerTurn(){bj.playing=false;bj.dealing=true;bj.activePlayer=-1;renderBJ();await wait(380);bj.revealed=true;renderBJ({flipHole:true});await wait(520);while(value(bj.dealer)<17){if(!bj.deck.length)makeDeck();bj.dealer.push(bj.deck.pop());bj.visibleDealer++;renderBJ({animateDealer:true});await wait(560)}settleBJ()}
+      function settleBJ(){const dealerValue=value(bj.dealer),dealerBust=dealerValue>21,results=[];for(let i=0;i<bj.playerCount;i++){const playerValue=value(bj.players[i]),label=bj.playerCount===1?'You':`P${i+1}`;if(playerValue>21){const margin=Math.max(1,playerValue-21),bonus=Math.min(100,(margin-1)*25),extraLoss=Math.min(bj.chips[i],100+bonus);bj.chips[i]-=extraLoss;results.push(`${label} bust −${100+extraLoss} (${margin}-point loss)`)}else if(dealerBust||playerValue>dealerValue){const margin=dealerBust?Math.max(1,dealerValue-21):Math.max(1,playerValue-dealerValue);const bonus=Math.min(100,(margin-1)*25);const payout=200+bonus;bj.chips[i]+=payout;results.push(`${label} +${payout}${bonus?` (${margin}-point margin)`:''}`)}else if(playerValue===dealerValue){bj.chips[i]+=100;results.push(`${label} push +100`)}else{const margin=Math.max(1,dealerValue-playerValue),bonus=Math.min(100,(margin-1)*25),extraLoss=Math.min(bj.chips[i],100+bonus);bj.chips[i]-=extraLoss;results.push(`${label} −${100+extraLoss} (${margin}-point loss)`)}}if(coinRoundPending){coinRoundPending=false;const effort=bj.players.slice(0,bj.playerCount).reduce((sum,hand)=>{const n=value(hand);return sum+(n>21?.25:dealerBust||n>dealerValue?1:n===dealerValue?.5:.25)},0)/bj.playerCount;ArcadeEconomy.progress('blackjack',effort);}finishBJ(results.join(' · '))}
+      async function advancePlayer(delay=0){if(delay){bj.dealing=true;renderBJ();await wait(delay);bj.dealing=false}const next=availablePlayer(Math.max(0,bj.activePlayer+1));if(next<0){await dealerTurn();return}bj.activePlayer=next;bj.playing=true;renderBJ()}
+      async function deal(){if(bj.playing||bj.dealing)return;const shortPlayer=Array.from({length:bj.playerCount},(_,i)=>i).find(i=>bj.chips[i]<100);if(shortPlayer!==undefined){$('blackjackMessage').textContent=`Player ${shortPlayer+1} needs 100 chips to deal`;return}coinRoundPending=true;if(bj.deck.length<2*(bj.playerCount+1))makeDeck();for(let i=0;i<bj.playerCount;i++)bj.chips[i]-=100;bj.players=[[],[]];bj.dealer=[];bj.visiblePlayers=[0,0];bj.visibleDealer=0;bj.stood=[false,false];bj.activePlayer=-1;bj.playing=false;bj.dealing=true;bj.revealed=false;$('blackjackMessage').textContent='';renderBJ();const order=[];for(let round=0;round<2;round++){for(let i=0;i<bj.playerCount;i++)order.push({type:'player',index:i});order.push({type:'dealer'})}for(const item of order){await wait(480);if(item.type==='dealer'){bj.dealer.push(bj.deck.pop());bj.visibleDealer++}else{bj.players[item.index].push(bj.deck.pop());bj.visiblePlayers[item.index]++}renderBJ({animatePlayer:item.type==='player'?item.index:-1,animateDealer:item.type==='dealer'})}bj.dealing=false;for(let i=0;i<bj.playerCount;i++)if(value(bj.players[i])>=21)bj.stood[i]=true;$('blackjackMessage').textContent='';const first=availablePlayer(0);if(first<0){await dealerTurn();return}bj.activePlayer=first;bj.playing=true;renderBJ()}
+      $('newHand').addEventListener('click',deal);
+      $('hit').addEventListener('click',async()=>{if(!bj.playing||bj.dealing||bj.activePlayer<0)return;const i=bj.activePlayer;if(!bj.deck.length)makeDeck();bj.players[i].push(bj.deck.pop());bj.visiblePlayers[i]++;renderBJ({animatePlayer:i});if(value(bj.players[i])>=21){bj.stood[i]=true;await advancePlayer(420)}});
+      $('stand').addEventListener('click',()=>{if(!bj.playing||bj.dealing||bj.activePlayer<0)return;bj.stood[bj.activePlayer]=true;advancePlayer()});
+      document.querySelectorAll('.mode-button').forEach(button=>button.addEventListener('click',()=>{if(bj.playing||bj.dealing)return;bj.playerCount=Number(button.dataset.playerCount);bj.players=[[],[]];bj.visiblePlayers=[0,0];bj.stood=[false,false];$('blackjackMessage').textContent='';renderBJ()}));
+      renderBJ();
+
+      // 2048: standard single-merge moves with persistent best score.
+      let grid=[],score=0,best=Number(localStorage.getItem('pixelParty2048Best'))||0;let movedAt=0;$('best').textContent=best;
+      function addTile(){const empty=[];for(let r=0;r<4;r++)for(let c=0;c<4;c++)if(!grid[r][c])empty.push([r,c]);if(empty.length){const [r,c]=empty[Math.random()<.9?Math.floor(Math.random()*empty.length):0];grid[r][c]=Math.random()<.9?2:4}}
+      function init2048(){grid=Array.from({length:4},()=>Array(4).fill(0));score=0;addTile();addTile();$('boardOverlay').classList.remove('show');render2048()}
+      function render2048(){const board=$('board'),overlay=$('boardOverlay');board.querySelectorAll('.cell').forEach(n=>n.remove());grid.forEach(row=>row.forEach(v=>{const cell=document.createElement('div');cell.className='cell'+(v>2048?' super':'');if(v)cell.dataset.value=v;cell.textContent=v||'';cell.setAttribute('aria-label',v?String(v):'empty');board.insertBefore(cell,overlay)}));$('score').textContent=score;$('best').textContent=best}
+      function gameOver(){return !grid.some(row=>row.includes(0))&&!grid.some((row,r)=>row.some((v,c)=>(r<3&&grid[r+1][c]===v)||(c<3&&row[c+1]===v)))}
+      function move2048(dir){if(activeGame!=='2048')return;const previousScore=score;let old=grid.map(r=>r.join(',')).join('|'),g=grid.map(r=>r.slice());for(let line=0;line<4;line++){let vals=[];for(let k=0;k<4;k++){const r=dir==='up'?k:dir==='down'?3-k:line,c=dir==='left'?k:dir==='right'?3-k:line;vals.push(g[r][c])}let compact=vals.filter(Boolean),merged=[];for(let i=0;i<compact.length;i++){if(compact[i]===compact[i+1]){merged.push(compact[i]*2);score+=compact[i]*2;i++}else merged.push(compact[i])}while(merged.length<4)merged.push(0);for(let k=0;k<4;k++){const r=dir==='up'?k:dir==='down'?3-k:line,c=dir==='left'?k:dir==='right'?3-k:line;g[r][c]=merged[k]}}grid=g;if(old!==grid.map(r=>r.join(',')).join('|')){ArcadeEconomy.progress('2048',score-previousScore);addTile();if(score>best){best=score;localStorage.setItem('pixelParty2048Best',best)}render2048();if(gameOver()){$('boardMessage').textContent='No more moves';$('boardOverlay').classList.add('show')}}}
+      window.addEventListener('keydown',e=>{if(activeGame==='2048'&&!$('arcadeShop').open){const d={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'}[e.key];if(d){e.preventDefault();move2048(d)}}});
+      $('restart2048').addEventListener('click',init2048);$('again2048').addEventListener('click',init2048);
+      let touch=null;$('board').addEventListener('touchstart',e=>{touch=[e.touches[0].clientX,e.touches[0].clientY]},{passive:true});$('board').addEventListener('touchend',e=>{if(!touch)return;const dx=e.changedTouches[0].clientX-touch[0],dy=e.changedTouches[0].clientY-touch[1];if(Math.max(Math.abs(dx),Math.abs(dy))>20)move2048(Math.abs(dx)>Math.abs(dy)?dx>0?'right':'left':dy>0?'down':'up');touch=null},{passive:true});
+
+
+    })();
+  </script>
+  <script src="snow-physics.js"></script>
+  <script src="snow-rider.js"></script>
+</body>
+</html>
